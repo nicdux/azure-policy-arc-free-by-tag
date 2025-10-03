@@ -1,0 +1,27 @@
+{
+  "mode": "Indexed",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.HybridCompute/machines"
+        },
+        {
+          "field": "tags['DefenderForServers']",
+          "equals": "Disabled"
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {},
+  "metadata": {
+    "category": "Security Center",
+    "displayName": "Audit Arc machines tagged for Defender exclusion",
+    "description": "Audits Azure Arc machines with DefenderForServers=Disabled tag. These machines are marked for exclusion from Defender for Servers Plan 2. Use this policy with remediation automation (Azure Automation runbook, Logic App, or Function) to uninstall/disable Defender agents on tagged Arc machines, or manually configure exclusions in Defender for Cloud settings."
+  }
+}
+
