@@ -1,0 +1,54 @@
+{
+  "mode": "Indexed",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "tags['DefenderForServers']",
+          "exists": "false"
+        },
+        {
+          "value": "[resourceGroup().tags['DefenderForServers']]",
+          "notEquals": ""
+        },
+        {
+          "anyOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
+            },
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachineScaleSets"
+            },
+            {
+              "field": "type",
+              "equals": "Microsoft.HybridCompute/machines"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "modify",
+      "details": {
+        "roleDefinitionIds": [
+          "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+        ],
+        "operations": [
+          {
+            "operation": "addOrReplace",
+            "field": "tags['DefenderForServers']",
+            "value": "[resourceGroup().tags['DefenderForServers']]"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {},
+  "metadata": {
+    "category": "Tags",
+    "displayName": "Inherit DefenderForServers tag from resource group to resources",
+    "description": "Inherits the DefenderForServers tag from the resource group to VMs, VMSSs, and Azure Arc machines if the resource doesn't have the tag. Applies the tag value from the resource group during resource creation or update. Existing resources can be remediated using a remediation task."
+  }
+}
